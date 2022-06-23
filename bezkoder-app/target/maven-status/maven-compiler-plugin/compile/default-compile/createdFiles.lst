@@ -1,0 +1,4 @@
+com\bezkoder\spring\datajpa\controller\NewspaperController.class
+com\bezkoder\spring\datajpa\SpringBootDataJpaApplication.class
+com\bezkoder\spring\datajpa\model\Newspaper.class
+com\bezkoder\spring\datajpa\repository\NewspaperRepository.class
