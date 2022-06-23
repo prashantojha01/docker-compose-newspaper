@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.bezkoder.spring.datajpa.model.Tutorial;
+import com.bezkoder.spring.datajpa.model.Newspaper;
 
-public interface TutorialRepository extends JpaRepository<Tutorial, Long> {
-	List<Tutorial> findByPublished(boolean published);
-	List<Tutorial> findByTitleContaining(String title);
+public interface NewpaperRepository extends JpaRepository<Newspaper, Long> {
+	List<Newspaper> findByPublished(boolean published);
+	List<Newspaper> findByTitleContaining(String title);
 }

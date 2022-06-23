@@ -18,88 +18,88 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bezkoder.spring.datajpa.model.Tutorial;
-import com.bezkoder.spring.datajpa.repository.TutorialRepository;
+import com.bezkoder.spring.datajpa.model.Newspaper;
+import com.bezkoder.spring.datajpa.repository.NewspaperRepository;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api")
-public class TutorialController {
+public class NewspaperController {
 
 	@Autowired
-	TutorialRepository tutorialRepository;
+	NewspaperRepository NewspaperRepository;
 
-	@GetMapping("/tutorials")
-	public ResponseEntity<List<Tutorial>> getAllTutorials(@RequestParam(required = false) String title) {
+	@GetMapping("/newspapers")
+	public ResponseEntity<List<Newspaper>> getAllNewspapers(@RequestParam(required = false) String title) {
 		try {
-			List<Tutorial> tutorials = new ArrayList<Tutorial>();
+			List<Newspaper> newspapers = new ArrayList<Newspaper>();
 
 			if (title == null)
-				tutorialRepository.findAll().forEach(tutorials::add);
+				NewspaperRepository.findAll().forEach(newspapers::add);
 			else
-				tutorialRepository.findByTitleContaining(title).forEach(tutorials::add);
+				NewspaperRepository.findByTitleContaining(title).forEach(newspapers::add);
 
-			if (tutorials.isEmpty()) {
+			if (newspapers.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 
-			return new ResponseEntity<>(tutorials, HttpStatus.OK);
+			return new ResponseEntity<>(newspapers, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@GetMapping("/tutorials/{id}")
-	public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") long id) {
-		Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+	@GetMapping("/newspapers/{id}")
+	public ResponseEntity<Newspaper> getNewspaperById(@PathVariable("id") long id) {
+		Optional<Newspaper> NewspaperData = NewspaperRepository.findById(id);
 
-		if (tutorialData.isPresent()) {
-			return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
+		if (NewspaperData.isPresent()) {
+			return new ResponseEntity<>(NewspaperData.get(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
-	@PostMapping("/tutorials")
-	public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
+	@PostMapping("/newspapers")
+	public ResponseEntity<Newspaper> createNewspaper(@RequestBody Newspaper Newspaper) {
 		try {
-			Tutorial _tutorial = tutorialRepository
-					.save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), false));
-			return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
+			Newspaper _Newspaper = NewspaperRepository
+					.save(new Newspaper(Newspaper.getTitle(), Newspaper.getDescription(), false));
+			return new ResponseEntity<>(_Newspaper, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@PutMapping("/tutorials/{id}")
-	public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
-		Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+	@PutMapping("/newspapers/{id}")
+	public ResponseEntity<Newspaper> updateNewspaper(@PathVariable("id") long id, @RequestBody Newspaper Newspaper) {
+		Optional<Newspaper> NewspaperData = NewspaperRepository.findById(id);
 
-		if (tutorialData.isPresent()) {
-			Tutorial _tutorial = tutorialData.get();
-			_tutorial.setTitle(tutorial.getTitle());
-			_tutorial.setDescription(tutorial.getDescription());
-			_tutorial.setPublished(tutorial.isPublished());
-			return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
+		if (NewspaperData.isPresent()) {
+			Newspaper _Newspaper = NewspaperData.get();
+			_Newspaper.setTitle(Newspaper.getTitle());
+			_Newspaper.setDescription(Newspaper.getDescription());
+			_Newspaper.setPublished(Newspaper.isPublished());
+			return new ResponseEntity<>(NewspaperRepository.save(_Newspaper), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
-	@DeleteMapping("/tutorials/{id}")
-	public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") long id) {
+	@DeleteMapping("/newspapers/{id}")
+	public ResponseEntity<HttpStatus> deleteNewspaper(@PathVariable("id") long id) {
 		try {
-			tutorialRepository.deleteById(id);
+			NewspaperRepository.deleteById(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@DeleteMapping("/tutorials")
-	public ResponseEntity<HttpStatus> deleteAllTutorials() {
+	@DeleteMapping("/newspapers")
+	public ResponseEntity<HttpStatus> deleteAllNewspapers() {
 		try {
-			tutorialRepository.deleteAll();
+			NewspaperRepository.deleteAll();
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -107,15 +107,15 @@ public class TutorialController {
 
 	}
 
-	@GetMapping("/tutorials/published")
-	public ResponseEntity<List<Tutorial>> findByPublished() {
+	@GetMapping("/newspapers/published")
+	public ResponseEntity<List<Newspaper>> findByPublished() {
 		try {
-			List<Tutorial> tutorials = tutorialRepository.findByPublished(true);
+			List<Newspaper> newspapers = NewspaperRepository.findByPublished(true);
 
-			if (tutorials.isEmpty()) {
+			if (newspapers.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
-			return new ResponseEntity<>(tutorials, HttpStatus.OK);
+			return new ResponseEntity<>(newspapers, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
